@@ -12,6 +12,7 @@ const BIZFORM_BASE = 'https://bizform.vitalyun.com/backend/api';
 const BIZFORM_API_KEY = process.env.BIZFORM_API_KEY;
 const RECORD_FORM_ID = 17;
 const FIELD_IDS = {
+  date: 'field_1',
   name: 'field_2',
   employeeId: 'field_3',
   category: 'field_8',
@@ -87,6 +88,7 @@ app.post('/api/save-record', async (req, res) => {
     if (!name) return res.status(400).json({ error: '請提供 name' });
 
     const now = new Date();
+    const dateStr = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}`;
 
     const body = {
       id: 0,
@@ -94,6 +96,7 @@ app.post('/api/save-record', async (req, res) => {
       title: name,
       summary: name,
       attributes: [
+        { id: FIELD_IDS.date, value: [dateStr] },
         { id: FIELD_IDS.name, value: [name] },
         { id: FIELD_IDS.employeeId, value: [employeeId || ''] },
         { id: FIELD_IDS.category, value: [category] },
